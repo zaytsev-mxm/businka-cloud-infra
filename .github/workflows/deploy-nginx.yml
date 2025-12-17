@@ -1,0 +1,36 @@
+name: Deploy Nginx Config
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'sites/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Copy config to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: sites/businka-cloud.conf
+          target: /tmp/nginx-deploy
+          strip_components: 1
+
+      - name: Deploy and reload Nginx
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo cp /tmp/nginx-deploy/businka-cloud.conf /etc/nginx/sites-available/default
+            sudo nginx -t && sudo systemctl reload nginx
+            rm -rf /tmp/nginx-deploy
