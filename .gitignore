@@ -1,0 +1,14 @@
+# IDE - IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# SSL certificates and keys (sensitive)
+*.pem
+*.key
+*.crt
+
+# System files
+.DS_Store
+Thumbs.db
