@@ -32,7 +32,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # Deploy main site config
-            sudo cp /tmp/nginx-deploy/businka-cloud.conf /etc/nginx/sites-available/default
+            sudo cp /tmp/nginx-deploy/businka.cloud.conf /etc/nginx/sites-available/default
 
             # Deploy game subdomain config
             sudo cp /tmp/nginx-deploy/game.businka.cloud.conf /etc/nginx/sites-available/game.businka.cloud
